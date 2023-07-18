@@ -14,6 +14,27 @@ app.use(express.static('public'));
 // Path to the JSON database file
 const dbPath = path.join(__dirname, 'db', 'db.json');
 
+// Read the notes from the database file
+const readNotesFromDB = () => {
+    try {
+      const dbData = fs.readFileSync(dbPath, 'utf8');
+      return JSON.parse(dbData);
+    } catch (error) {
+      console.error('Error reading from the database:', error);
+      return [];
+    }
+  };
+  
+// Write the notes to the database file
+const writeNotesToDB = (notes) => {
+    try {
+      fs.writeFileSync(dbPath, JSON.stringify(notes, null, 2));
+    } catch (error) {
+      console.error('Error writing to the database:', error);
+    }
+  };
+  
+
 // Get all notes
 app.get('/api/notes', (req, res) => {
     const notes = readNotesFromDB();
